@@ -16,11 +16,13 @@ def find_function_call(method_, key_func="/"):
     if method_.is_external():
         return 0
     method = method_.get_method()
-
     if not method.get_code(): return 0
+    
     instruction_tmp = []
     for instruction in method.get_instructions():
         if("const-string" in instruction.get_name()):
+            #print (method)
+            #print (instruction)
             instruction_tmp.append(instruction.get_operands())
         for operand in instruction.get_operands():
             for op in operand:
