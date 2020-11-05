@@ -6,7 +6,7 @@ from androguard.misc import AnalyzeAPK
 
 #apk_file="com.coloros.gallery3d.apk"
 if ( len(sys.argv) < 2 ):
-    apk_file="BackupAndRestore.apk"
+    apk_file=""
 else:
     apk_file=sys.argv[1]
 #apk_file="BackupAndRestore.apk"
