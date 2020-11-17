@@ -5,12 +5,15 @@ import sys
 #from androguard.core.bytecodes.dvm import ClassDefItem
 
 from androguard.misc import AnalyzeAPK
+def init(apk_file):
+    print_k(apk_file)
+    a,d,dx = AnalyzeAPK(apk_file)
+    methods = dx.get_methods()
+    return methods 
 
-def print_k(msg, info='+'):
-        print("[{}] {}".format(info,msg))
-
-def usage():
-    print_k("python ./{} [apk_file]".format(sys.argv[0]))
+def print_k(msg, info='+')  : print("[{}] {}".format(info,msg))
+def usage()                 : print_k("python ./{} [apk_file]".format(sys.argv[0]))
+def print_l(list_data)      : for msg in list_data : print ("\t{}".format(msg))
 
 def find_function_call(method_, key_func="/"):
     if method_.is_external():
@@ -24,37 +27,20 @@ def find_function_call(method_, key_func="/"):
             #print (method)
             #print (instruction)
             instruction_tmp.append(instruction.get_operands())
-        
         for operand in instruction.get_operands():
             for op in operand:
                 if key_func in str(op):
-                    if(instruction_tmp):
-                        print_k(op,"!")
-                        print_k(method,"->")
-                        print_l(instruction_tmp)
+                    print_k(op,"!")
+                    return instruction_tmp
     return 0
 
-def init(apk_file):
-    print_k(apk_file)
-    try:
-        pass
-        #dalvik_ctx = DalvikVMFormat( APK(apk_file) )
-    except :
-        print_k("DalvicVMFormat Error","-")
-        sys.exit();
-    a,d,dx = AnalyzeAPK(apk_file)
-    methods = dx.get_methods()
-    #methods = dalvik_ctx.get_methods()
-    #class = "com.oppo.gallery3d.o.a"
-    return methods 
-
-def print_l(list_data):
-    for msg in list_data :
-        print ("\t{}".format(msg))
 
 def scan_methods(methods, key_func="/"):
     for method in methods:
-        find_function_call(method, key_func)
+        inst_list = find_function_call(method, key_func)
+        if inst_list :
+            print_k(method,"->")
+            print_l(inst_list)
                      
 def main(): 
     if(len(sys.argv) > 1):
@@ -64,7 +50,7 @@ def main():
         sys.exit(1)
 
     methods = init(apk_name)
-    scan_methods(methods, "Runtime;->exec")
+    scan_methods(methods, "RUtilsCmd")
 
 if __name__ == "__main__":
     main()

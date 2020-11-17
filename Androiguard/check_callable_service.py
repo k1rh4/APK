@@ -6,7 +6,7 @@ from androguard.misc import AnalyzeAPK
 
 #apk_file="com.coloros.gallery3d.apk"
 if ( len(sys.argv) < 2 ):
-    apk_file=""
+    apk_file="BackupAndRestore.apk"
 else:
     apk_file=sys.argv[1]
 #apk_file="BackupAndRestore.apk"
@@ -23,10 +23,11 @@ for cert in a.get_certificates():
 #     cert.signature_algo  # Signature algorithm
 #     cert.serial_number  # Serial number
 #     cert.contents  # The DER coded bytes of the certificate itself
-    certificate_signature ="57 AA BE 69 96 0A 90 8A 74 68 28 45 67 94 FB FB 66 64 0B A2"
-    
-    #print(cert.sha1_fingerprint)
-    if(str(certificate_signature) == str(cert.sha1_fingerprint) ):
+    #oppo_finger ="57 AA BE 69 96 0A 90 8A 74 68 28 45 67 94 FB FB 66 64 0B A2"
+    oppo_finger  ="28 3D 60 DD CD 20 C5 6E A1 71 9C E9 05 27 F1 23 5A E8 0E FA"
+    #print(oppo_finger)
+    print(str(cert.sha1_fingerprint))
+    if(str(oppo_finger) == str(cert.sha1_fingerprint) ):
         signed_flag=True
         print("----------------------------------------------------")
         print("[+] %s init Done" %(apk_file))
@@ -50,7 +51,7 @@ for service_name in service_lists:
     tmpData       =""
     intent_filter =[]
     permission    = ""
-    exported      = ""
+    exported      = False
     has_ifilter   = False 
     
     service_name = service_name.split(".")[-1]
@@ -65,10 +66,8 @@ for service_name in service_lists:
         else: permission=""
         
         if (service.has_attr('android:exported')):
-            if ( service['android:exported'] == "true"): exported="true"
-            if ( service['android:exported'] == "false"): exported="false"
-        else :
-            exported=""
+            if ( service['android:exported'] == "true"): exported=True
+        else: exported = False
         
         # intent filter 
         if (len(service.find_all('intent-filter')) > 0 ):
