@@ -24,14 +24,11 @@ def find_function_call(method_, key_func="/"):
             #print (method)
             #print (instruction)
             instruction_tmp.append(instruction.get_operands())
-        
         for operand in instruction.get_operands():
             for op in operand:
                 if key_func in str(op):
-                    if(instruction_tmp):
-                        print_k(op,"!")
-                        print_k(method,"->")
-                        print_l(instruction_tmp)
+                    print_k(op,"!")
+                    return instruction_tmp
     return 0
 
 def init(apk_file):
@@ -54,7 +51,10 @@ def print_l(list_data):
 
 def scan_methods(methods, key_func="/"):
     for method in methods:
-        find_function_call(method, key_func)
+        inst_list = find_function_call(method, key_func)
+        if inst_list :
+            print_k(method,"->")
+            print_l(inst_list)
                      
 def main(): 
     if(len(sys.argv) > 1):
@@ -64,7 +64,7 @@ def main():
         sys.exit(1)
 
     methods = init(apk_name)
-    scan_methods(methods, "Runtime;->exec")
+    scan_methods(methods, "RUtilsCmd")
 
 if __name__ == "__main__":
     main()
