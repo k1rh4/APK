@@ -79,8 +79,9 @@ def main(file_name):
         return (stdout_string)
 
     FilterStr = ['chmod ','.tar','.zip','sh -c','.jar']
+    FilterStr = ['.dat','.xml']
     MethodsStr = ['File;->create','File;-><init>' ,'loadLibrary','Runtime;->exec','dlopen' ,"DexClassLoader;->loadClass"]
-    MethodsStr = ['File;->create', 'loadLibrary','Runtime;->exec','dlopen' ,"DexClassLoader;->loadClass"]
+    MethodsStr = ["DocumentBuilder","XPathFactory"]
     #MethodsStr = ['Runtime;->exec','dlopen' ,"loadClass"]
 #File-> 
     functionTraveler = []
